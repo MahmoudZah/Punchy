@@ -5,12 +5,26 @@ function mapCardVariant(variant) {
   return 'drink'
 }
 
+const FALLBACK_NAV_LABELS = {
+  'sweet-treats': 'Treats',
+}
+
 export function mapMenuSections(categories = []) {
   return categories
     .filter((category) => category?.id && category?.title)
+    .sort((a, b) => {
+      if (a.orderRank && b.orderRank) {
+        return a.orderRank.localeCompare(b.orderRank)
+      }
+      return 0
+    })
     .map((category) => ({
       id: category.id,
       title: category.title,
+      navLabel:
+        category.navLabel ??
+        FALLBACK_NAV_LABELS[category.id] ??
+        category.title,
       tagline: category.tagline ?? '',
       cardVariant: mapCardVariant(category.cardVariant),
       items: (category.items ?? [])
@@ -25,21 +39,38 @@ export function mapMenuSections(categories = []) {
     }))
 }
 
+const DEFAULT_SOCIAL_LINKS = [
+  {
+    platform: 'instagram',
+    url: 'https://www.instagram.com/retrobrew.eg/',
+    label: 'Instagram',
+  },
+  {
+    platform: 'tiktok',
+    url: 'https://www.tiktok.com/@retrobrew.eg',
+    label: 'TikTok',
+  },
+]
+
 export function mapSiteSettings(settings) {
   if (!settings) return null
 
   return {
+    heroEyebrow: settings.heroEyebrow ?? 'Coffee · Bowls · Bites',
     heroTitleLine1: settings.heroTitleLine1 ?? 'MENU',
     heroTitleLine2: settings.heroTitleLine2 ?? 'BREW.',
-    heroEyebrow: settings.heroEyebrow ?? 'Coffee · Bowls · Bites',
     heroTagline: settings.heroTagline ?? 'Less rush. More flavour.',
-    heroDescription:
-      settings.heroDescription ??
-      'Iced classics, fresh salads & sweet treats — brewed the retro way.',
     heroCtaLabel: settings.heroCtaLabel ?? 'Explore Menu',
     heroBackgroundUrl: settings.heroBackgroundUrl ?? null,
     heroDrinkUrl: settings.heroDrinkUrl ?? null,
+    logoUrl: settings.logoUrl ?? null,
+    socialLinks:
+      settings.socialLinks?.length > 0 ? settings.socialLinks : DEFAULT_SOCIAL_LINKS,
+    currencySuffix: settings.currencySuffix ?? 'LE',
+    loadingMessage: settings.loadingMessage ?? 'Loading menu…',
     footerMotto: settings.footerMotto ?? 'RETRO BREW.',
     footerText: settings.footerText ?? 'Brews & Bites',
+    seoTitle: settings.seoTitle ?? 'RETRO BREW — Brews & Bites',
+    seoDescription: settings.seoDescription ?? '',
   }
 }

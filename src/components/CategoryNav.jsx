@@ -1,16 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-const navLabels = {
-  coffee: 'Coffee',
-  matcha: 'Matcha',
-  'non-coffee': 'Non-Coffee',
-  'add-ons': 'Add-Ons',
-  refreshers: 'Refreshers',
-  'sweet-treats': 'Treats',
-  salads: 'Salads',
-  bites: 'Bites',
-}
-
 export default function CategoryNav({ menuSections }) {
   const sectionIds = useMemo(() => menuSections.map((section) => section.id), [menuSections])
   const [activeId, setActiveId] = useState(sectionIds[0])
@@ -129,7 +118,7 @@ export default function CategoryNav({ menuSections }) {
       <nav className="category-tabs__nav" aria-label="Menu categories">
         <ul className="category-tabs__list" ref={tabListRef}>
           {menuSections.map((section) => {
-            const label = navLabels[section.id] ?? section.title
+            const label = section.navLabel ?? section.title
             const isActive = section.id === activeId
 
             return (

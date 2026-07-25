@@ -7,6 +7,7 @@ export default function MenuCard({
   image,
   tags = [],
   variant = 'food',
+  currencySuffix = 'LE',
 }) {
   const hasImage = Boolean(image)
   const [cardRef, isInView] = useInView()
@@ -62,7 +63,7 @@ export default function MenuCard({
             ) : null}
           </div>
           <div className="menu-card__footer">
-            <span className="menu-card__price">{price} LE</span>
+            <span className="menu-card__price">{price} {currencySuffix}</span>
           </div>
         </div>
       </div>

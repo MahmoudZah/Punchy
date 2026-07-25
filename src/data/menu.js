@@ -140,6 +140,7 @@ export const menuSections = [
   {
     id: 'sweet-treats',
     title: 'Sweet Treats',
+    navLabel: 'Treats',
     tagline: 'Baked',
     cardVariant: 'extras',
     items: [item('Thin Cookies', 120), item('Energy Bites', 90)],

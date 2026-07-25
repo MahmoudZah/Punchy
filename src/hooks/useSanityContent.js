@@ -5,9 +5,10 @@ import { mapMenuSections, mapSiteSettings } from '../sanity/mapContent'
 import { MENU_QUERY, SITE_SETTINGS_QUERY } from '../sanity/queries'
 
 const defaultSiteSettings = mapSiteSettings({})
+const mappedFallbackMenu = mapMenuSections(fallbackMenuSections)
 
 export function useSanityContent() {
-  const [menuSections, setMenuSections] = useState(client ? [] : fallbackMenuSections)
+  const [menuSections, setMenuSections] = useState(client ? [] : mappedFallbackMenu)
   const [siteSettings, setSiteSettings] = useState(defaultSiteSettings)
   const [source, setSource] = useState('local')
   const [isLoading, setIsLoading] = useState(Boolean(client))
@@ -34,7 +35,7 @@ export function useSanityContent() {
           setMenuSections(mappedMenu)
           setSource('sanity')
         } else {
-          setMenuSections(fallbackMenuSections)
+          setMenuSections(mappedFallbackMenu)
           setSource('local')
         }
 
@@ -42,7 +43,7 @@ export function useSanityContent() {
       } catch (error) {
         console.warn('Sanity content unavailable, using local menu data.', error)
         if (!cancelled) {
-          setMenuSections(fallbackMenuSections)
+          setMenuSections(mappedFallbackMenu)
           setSource('local')
         }
       } finally {

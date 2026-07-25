@@ -1,7 +1,14 @@
 import MenuCard from './MenuCard'
 import MenuListCard from './MenuListCard'
 
-export default function MenuSection({ id, title, tagline, items, cardVariant = 'drink' }) {
+export default function MenuSection({
+  id,
+  title,
+  tagline,
+  items,
+  cardVariant = 'drink',
+  currencySuffix = 'LE',
+}) {
   return (
     <section className="menu-section" id={id} aria-labelledby={`${id}-heading`}>
       <div className="menu-section__heading">
@@ -16,12 +23,12 @@ export default function MenuSection({ id, title, tagline, items, cardVariant = '
       </div>
 
       {cardVariant === 'extras' ? (
-        <MenuListCard items={items} />
+        <MenuListCard items={items} currencySuffix={currencySuffix} />
       ) : (
         <ul className="menu-grid menu-grid--showcase">
           {items.map((item) => (
             <li key={item.name} className="menu-grid__item">
-              <MenuCard {...item} variant={cardVariant} />
+              <MenuCard {...item} variant={cardVariant} currencySuffix={currencySuffix} />
             </li>
           ))}
         </ul>
