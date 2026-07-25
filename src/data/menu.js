@@ -83,22 +83,39 @@ export const menuSections = [
     tagline: 'Iced & Hot',
     cardVariant: 'drink',
     items: [
-      item('Espresso', 75),
-      item('Espresso Macchiato', 95),
-      item('Cortado', 95),
-      item('Turkish Coffee', 55),
-      item('Americano', 110),
-      item('Cappuccino', 110),
-      item('Flat White', 105),
-      item('Filter Coffee', 160),
-      item('Mocha', 150),
+      item('Espresso', 75, { image: encodeURI('/hot coffee/espresso.png') }),
+      item('Espresso Macchiato', 95, {
+        image: encodeURI('/hot coffee/espresso machiatto.png'),
+      }),
+      item('Cortado', 95, { image: encodeURI('/hot coffee/cortado.png') }),
+      item('Turkish Coffee', 55, { image: encodeURI('/hot coffee/turkish coffee.png') }),
+      item('Americano', 110, { image: encodeURI('/coffee iced/americano.png') }),
+      item('Cappuccino', 110, {
+        image: encodeURI('/hot coffee/flat white_ cappuccino .png'),
+      }),
+      item('Flat White', 105, {
+        image: encodeURI('/hot coffee/flat white_ cappuccino .png'),
+      }),
+      item('Filter Coffee', 160, { image: encodeURI('/hot coffee/filter coffee.png') }),
+      item('Mocha', 150, { image: encodeURI('/coffee iced/ice mocha.png') }),
       item('Affogato', 130),
-      item('White Mocha', 150),
-      item('Dirty Espresso', 140),
-      item('The Retro', 210, { tags: ['signature'] }),
-      item('Spanish Latte', 150),
-      item('Salted Vanilla Latte', 150),
-      item('Salted Caramel Latte', 150),
+      item('White Mocha', 150, {
+        image: encodeURI('/coffee iced/ice latte_ spanish_ the retro_ S.V_ W.M_ S.C.png'),
+      }),
+      item('Dirty Espresso', 140, { image: encodeURI('/hot coffee/dirty espresso .png') }),
+      item('The Retro', 210, {
+        tags: ['signature'],
+        image: encodeURI('/coffee iced/ice latte_ spanish_ the retro_ S.V_ W.M_ S.C.png'),
+      }),
+      item('Spanish Latte', 150, {
+        image: encodeURI('/coffee iced/ice latte_ spanish_ the retro_ S.V_ W.M_ S.C.png'),
+      }),
+      item('Salted Vanilla Latte', 150, {
+        image: encodeURI('/coffee iced/ice latte_ spanish_ the retro_ S.V_ W.M_ S.C.png'),
+      }),
+      item('Salted Caramel Latte', 150, {
+        image: encodeURI('/coffee iced/ice latte_ spanish_ the retro_ S.V_ W.M_ S.C.png'),
+      }),
     ],
   },
   {

@@ -55,7 +55,10 @@ export default function MenuCard({
             {tags.length > 0 ? (
               <ul className="menu-card__tags" aria-label={`${name} tags`}>
                 {tags.map((tag) => (
-                  <li key={tag} className="menu-card__tag">
+                  <li
+                    key={tag}
+                    className={`menu-card__tag${tag === 'signature' ? ' menu-card__tag--signature' : ''}`}
+                  >
                     {tag}
                   </li>
                 ))}
