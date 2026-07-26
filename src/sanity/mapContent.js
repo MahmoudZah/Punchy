@@ -5,6 +5,11 @@ function mapCardVariant(variant) {
   return 'drink'
 }
 
+function resolveCardVariant(category) {
+  if (category.id === 'offers') return 'offers'
+  return mapCardVariant(category.cardVariant)
+}
+
 const FALLBACK_NAV_LABELS = {
   'sweet-treats': 'Treats',
 }
@@ -26,7 +31,7 @@ export function mapMenuSections(categories = []) {
         FALLBACK_NAV_LABELS[category.id] ??
         category.title,
       tagline: category.tagline ?? '',
-      cardVariant: mapCardVariant(category.cardVariant),
+      cardVariant: resolveCardVariant(category),
       items: (category.items ?? [])
         .filter((entry) => entry?.name)
         .map((entry) => ({
@@ -37,6 +42,7 @@ export function mapMenuSections(categories = []) {
           ...(entry.tags?.length ? { tags: entry.tags } : {}),
         })),
     }))
+    .filter((section) => section.cardVariant !== 'offers' || section.items.length > 0)
 }
 
 const DEFAULT_SOCIAL_LINKS = [

@@ -21,18 +21,25 @@ export default function CategoryNav({ menuSections }) {
     return height + 10
   }, [])
 
-  const centerTabInList = useCallback((id) => {
+  const centerTabInList = useCallback((id, behavior = 'smooth') => {
     const list = tabListRef.current
     const tab = tabRefs.current[id]
     if (!list || !tab) return
 
-    const tabCenter = tab.offsetLeft + tab.offsetWidth / 2
+    const listRect = list.getBoundingClientRect()
+    const tabRect = tab.getBoundingClientRect()
+    const tabCenter = tabRect.left + tabRect.width / 2 - listRect.left + list.scrollLeft
     const nextScrollLeft = tabCenter - list.clientWidth / 2
     const maxScroll = list.scrollWidth - list.clientWidth
     const clamped = Math.max(0, Math.min(nextScrollLeft, maxScroll))
 
-    list.scrollTo({ left: clamped, behavior: 'smooth' })
+    list.scrollTo({ left: clamped, behavior })
   }, [])
+
+  useEffect(() => {
+    if (!activeId) return
+    centerTabInList(activeId)
+  }, [activeId, centerTabInList, sectionIds])
 
   const resolveActiveSection = useCallback(() => {
     const line = getActiveLine()

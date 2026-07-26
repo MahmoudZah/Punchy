@@ -57,7 +57,13 @@ export default function MenuCard({
                 {tags.map((tag) => (
                   <li
                     key={tag}
-                    className={`menu-card__tag${tag === 'signature' ? ' menu-card__tag--signature' : ''}`}
+                    className={[
+                      'menu-card__tag',
+                      tag === 'signature' ? 'menu-card__tag--signature' : '',
+                      tag === 'limited' ? 'menu-card__tag--limited' : '',
+                    ]
+                      .filter(Boolean)
+                      .join(' ')}
                   >
                     {tag}
                   </li>

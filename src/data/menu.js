@@ -4,7 +4,28 @@ const item = (name, price, extra = {}) => ({
   ...extra,
 })
 
+const img = (path) => ({ image: encodeURI(path) })
+
+const ICE_LATTE = '/coffee iced/ice latte_ spanish_ the retro_ S.V_ W.M_ S.C.png'
+const HOT_CAP = '/hot coffee/flat white_ cappuccino .png'
+
 export const menuSections = [
+  {
+    id: 'offers',
+    title: 'Offers',
+    navLabel: 'Offers',
+    tagline: 'Limited Time',
+    items: [
+      item('Matcha Duo Deal', 350, {
+        description: 'Any two matcha drinks — save 70 LE.',
+        tags: ['limited'],
+      }),
+      item('Morning Brew Combo', 180, {
+        description: 'Any hot coffee + cookie. Available before 11 AM.',
+        tags: ['limited'],
+      }),
+    ],
+  },
   {
     id: 'salads',
     title: 'Salads',
@@ -12,22 +33,22 @@ export const menuSections = [
     cardVariant: 'food',
     items: [
       item('Mexican Chicken Bowl', 320, {
-        image: encodeURI('/mexican.png'),
+        ...img('/salads/mexican.png'),
         description:
           'Grilled chicken, avocado, sweet corn, red beans, romaine lettuce, tortilla crunch & balsamic vinaigrette.',
       }),
       item('Beetroot & Quinoa Salad', 220, {
-        image: encodeURI('/beetroot.png'),
+        ...img('/salads/beetroot.png'),
         description:
           'Quinoa, roasted beetroot, feta cheese, blood orange, baby spinach, caramelized walnuts & lemon dressing.',
       }),
       item('Honey Chicken Salad', 240, {
-        image: encodeURI('/honey chicken.png'),
+        ...img('/salads/honey chicken.png'),
         description:
           'Grilled chicken, avocado, sweet corn, cherry tomatoes, sesame honey mustard dressing.',
       }),
       item('Creamy Tuna Oat Pasta Salad', 230, {
-        image: encodeURI('/creamy tuna.png'),
+        ...img('/salads/creamy tuna.png'),
         description:
           'Tuna, oat pasta, Greek yogurt dressing, roasted peppers, celery, carrots & fresh dill.',
       }),
@@ -40,38 +61,27 @@ export const menuSections = [
     cardVariant: 'drink',
     items: [
       item('Matcha', 170, {
-        image: encodeURI('/matcha.png'),
+        ...img('/matcha/matcha .png'),
         description:
           'Stone-ground ceremonial matcha whisked smooth, served iced or hot over your choice of milk.',
       }),
       item('Strawberry Matcha', 210, {
-        image: encodeURI('/strawberry matcha.png'),
+        ...img('/matcha/strawberry matcha.png'),
         description:
           'Fresh strawberry compote layered with creamy matcha and milk for a bright, balanced sip.',
       }),
-      item('White Chocolate Matcha', 200, {
-        image: encodeURI('/white chocolate matcha.png'),
-        description:
-          'Rich white chocolate folded into velvety matcha — indulgent, smooth, and lightly sweet.',
-      }),
       item('Spanish Matcha', 190, {
+        ...img('/matcha/Spanish Matcha.png'),
         description:
           'Sweetened condensed milk with matcha over ice — a bold, caramel-leaning classic.',
       }),
-      item('Salted Vanilla Matcha', 195, {
-        description:
-          'Madagascar vanilla and a touch of sea salt to lift the earthy depth of matcha.',
-      }),
-      item('The Brew Matcha', 210, {
-        tags: ['signature'],
-        description:
-          'Our house signature: premium matcha, balanced sweetness, and a finish that lingers.',
-      }),
       item('Mango Coconut Matcha', 210, {
+        ...img('/matcha/mango coconut matcha.png'),
         description:
           'Ripe mango and coconut cream blended with matcha for a tropical, sun-soaked profile.',
       }),
       item('Blueberry Matcha', 210, {
+        ...img('/matcha/blueberry matcha.png'),
         description:
           'Wild blueberry notes meet ceremonial matcha — fruity, vibrant, and refreshingly clean.',
       }),
@@ -83,47 +93,35 @@ export const menuSections = [
     tagline: 'Iced & Hot',
     cardVariant: 'drink',
     items: [
-      item('Espresso', 75, { image: encodeURI('/hot coffee/espresso.png') }),
-      item('Espresso Macchiato', 95, {
-        image: encodeURI('/hot coffee/espresso machiatto.png'),
-      }),
-      item('Cortado', 95, { image: encodeURI('/hot coffee/cortado.png') }),
-      item('Turkish Coffee', 55, { image: encodeURI('/hot coffee/turkish coffee.png') }),
-      item('Americano', 110, { image: encodeURI('/coffee iced/americano.png') }),
-      item('Cappuccino', 110, {
-        image: encodeURI('/hot coffee/flat white_ cappuccino .png'),
-      }),
-      item('Flat White', 105, {
-        image: encodeURI('/hot coffee/flat white_ cappuccino .png'),
-      }),
-      item('Filter Coffee', 160, { image: encodeURI('/hot coffee/filter coffee.png') }),
-      item('Mocha', 150, { image: encodeURI('/coffee iced/ice mocha.png') }),
-      item('Affogato', 130),
-      item('White Mocha', 150, {
-        image: encodeURI('/coffee iced/ice latte_ spanish_ the retro_ S.V_ W.M_ S.C.png'),
-      }),
-      item('Dirty Espresso', 140, { image: encodeURI('/hot coffee/dirty espresso .png') }),
+      item('Espresso', 75, { ...img('/hot coffee/espresso.png') }),
+      item('Espresso Macchiato', 95, { ...img('/hot coffee/espresso machiatto.png') }),
+      item('Cortado', 95, { ...img('/hot coffee/cortado.png') }),
+      item('Turkish Coffee', 55, { ...img('/hot coffee/turkish coffee.png') }),
+      item('Americano', 110, { ...img('/coffee iced/americano.png') }),
+      item('Cappuccino', 110, { ...img(HOT_CAP) }),
+      item('Flat White', 105, { ...img(HOT_CAP) }),
+      item('Filter Coffee', 160, { ...img('/hot coffee/filter coffee.png') }),
+      item('Mocha', 150, { ...img('/coffee iced/ice mocha.png') }),
+      item('White Mocha', 150, { ...img(ICE_LATTE) }),
+      item('Dirty Espresso', 140, { ...img('/hot coffee/dirty espresso .png') }),
       item('The Retro', 210, {
         tags: ['signature'],
-        image: encodeURI('/coffee iced/ice latte_ spanish_ the retro_ S.V_ W.M_ S.C.png'),
+        ...img(ICE_LATTE),
       }),
-      item('Spanish Latte', 150, {
-        image: encodeURI('/coffee iced/ice latte_ spanish_ the retro_ S.V_ W.M_ S.C.png'),
-      }),
-      item('Salted Vanilla Latte', 150, {
-        image: encodeURI('/coffee iced/ice latte_ spanish_ the retro_ S.V_ W.M_ S.C.png'),
-      }),
-      item('Salted Caramel Latte', 150, {
-        image: encodeURI('/coffee iced/ice latte_ spanish_ the retro_ S.V_ W.M_ S.C.png'),
-      }),
+      item('Spanish Latte', 150, { ...img(ICE_LATTE) }),
+      item('Salted Vanilla Latte', 150, { ...img(ICE_LATTE) }),
+      item('Salted Caramel Latte', 150, { ...img(ICE_LATTE) }),
     ],
   },
   {
     id: 'non-coffee',
     title: 'Non-Coffee',
     tagline: 'Warm',
-    cardVariant: 'extras',
-    items: [item('Hot Chocolate', 160), item('Tea', 60)],
+    cardVariant: 'drink',
+    items: [
+      item('Hot Chocolate', 160, { ...img('/non coffee hot/hot chocolate.png') }),
+      item('Tea', 60, { ...img('/non coffee hot/tea.png') }),
+    ],
   },
   {
     id: 'add-ons',
@@ -142,16 +140,18 @@ export const menuSections = [
     tagline: 'Cool & Fresh',
     cardVariant: 'drink',
     items: [
-      item('Classic Mojito', 140),
-      item('Passion Fruit Mojito', 170),
-      item('Pink Lemonade Mojito', 150),
-      item('Mix Berries Mojito', 170),
-      item('Mango Swiss Smoothie', 100),
-      item('Mix Berries Vanilla Smoothie', 180),
-      item('Pink Hibiscus Lemonade', 170),
-      item('Sunset Hibiscus', 170, { tags: ['signature'] }),
-      item('Mango Passion Mint', 180),
-      item('Watermelon Smoothie', 155),
+      item('Classic Mojito', 140, { ...img('/refreshers/classic mojito.png') }),
+      item('Pink Lemonade Mojito', 150, { ...img('/refreshers/pink lemonade.png') }),
+      item('Mix Berries Mojito', 170, { ...img('/refreshers/mix berry mojito .png') }),
+      item('Mango Swiss Smoothie', 100, { ...img('/refreshers/mango smoothie.png') }),
+      item('Mix Berries Vanilla Smoothie', 180, { ...img('/refreshers/mix berry smoothie.png') }),
+      item('Pink Hibiscus Lemonade', 170, { ...img('/refreshers/hibiscus mojito.png') }),
+      item('Sunset Hibiscus', 170, {
+        tags: ['signature'],
+        ...img('/refreshers/hibiscus pineapple.png'),
+      }),
+      item('Mango Passion Mint', 180, { ...img('/refreshers/mango passion smoothie.png') }),
+      item('Watermelon Smoothie', 155, { ...img('/refreshers/watermelon smoothie.png') }),
     ],
   },
   {
@@ -169,15 +169,19 @@ export const menuSections = [
     cardVariant: 'food',
     items: [
       item('Sriracha Chicken', 190, {
+        ...img('/Bites/Siracha chicken.png'),
         description: 'Grilled chicken, jalapeños, roasted peppers, lettuce & sriracha mayo.',
       }),
       item('Mediterranean Roast Beef', 230, {
+        ...img('/Bites/Roast beef.png'),
         description: 'Roast beef, sundried tomatoes, olives, mushrooms & jalapeños on sourdough.',
       }),
       item('Turkey & Cheddar', 190, {
+        ...img('/Bites/Turkey & cheddar.png'),
         description: 'Smoked turkey, cheddar cheese, tomatoes, watercress & mayo.',
       }),
       item('Smoked Salmon Bagel', 240, {
+        ...img('/Bites/Salmon bagel.png'),
         description: 'Smoked salmon, cream cheese, dill, watercress & sundried tomatoes.',
       }),
     ],
