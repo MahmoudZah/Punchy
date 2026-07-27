@@ -458,7 +458,7 @@ body {
   text-transform: uppercase;
   color: var(--color-blue-dark);
   cursor: pointer;
-  width: 250px;
+  width: 220px;
   transition:
     background-color 0.2s ease,
     color 0.2s ease,
@@ -483,7 +483,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.85rem;
-  width: 250px;
+  width: 220px;
 }
 
 .hero--poster .hero__social-link {

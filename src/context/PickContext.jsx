@@ -1,14 +1,73 @@
-import { createContext, useCallback, useContext, useMemo, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 
 const PickContext = createContext(null)
+const PICK_STORAGE_KEY = 'milk-cake-bakery:pick'
 
 export function makePickId(sectionId, name) {
   return `${sectionId}::${name}`
 }
 
+function isValidPickItem(entry) {
+  if (!entry || typeof entry !== 'object') return false
+
+  const price = Number(entry.price)
+  const quantity = Number(entry.quantity)
+
+  return (
+    typeof entry.id === 'string' &&
+    typeof entry.name === 'string' &&
+    Number.isFinite(price) &&
+    price >= 0 &&
+    typeof entry.sectionTitle === 'string' &&
+    Number.isFinite(quantity) &&
+    quantity > 0
+  )
+}
+
+function normalizePickItem(entry) {
+  return {
+    id: entry.id,
+    name: entry.name,
+    price: Number(entry.price),
+    sectionTitle: entry.sectionTitle ?? '',
+    quantity: Math.floor(Number(entry.quantity)),
+  }
+}
+
+function loadPickItems() {
+  try {
+    const raw = localStorage.getItem(PICK_STORAGE_KEY)
+    if (!raw) return []
+
+    const parsed = JSON.parse(raw)
+    if (!Array.isArray(parsed)) return []
+
+    return parsed.filter(isValidPickItem).map(normalizePickItem)
+  } catch {
+    return []
+  }
+}
+
+function savePickItems(items) {
+  try {
+    if (items.length === 0) {
+      localStorage.removeItem(PICK_STORAGE_KEY)
+      return
+    }
+
+    localStorage.setItem(PICK_STORAGE_KEY, JSON.stringify(items))
+  } catch {
+    // Ignore quota or private-mode storage errors.
+  }
+}
+
 export function PickProvider({ children, currencySuffix = 'EGP' }) {
-  const [items, setItems] = useState([])
+  const [items, setItems] = useState(loadPickItems)
   const [isOpen, setIsOpen] = useState(false)
+
+  useEffect(() => {
+    savePickItems(items)
+  }, [items])
 
   const pickItem = useCallback((item) => {
     setItems((prev) => {
@@ -25,7 +84,7 @@ export function PickProvider({ children, currencySuffix = 'EGP' }) {
             {
               id,
               name: item.name,
-              price: item.price,
+              price: Number(item.price),
               sectionTitle: item.sectionTitle ?? '',
               quantity: 1,
             },
