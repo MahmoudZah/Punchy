@@ -3,10 +3,13 @@ import MenuCard from './MenuCard'
 import MenuListCard from './MenuListCard'
 import TaglineWave from './TaglineWave'
 
+import PickButton from './PickButton'
+
 export default function MenuSection({
   id,
   title,
   tagline,
+  description,
   items,
   cardVariant = 'drink',
   currencySuffix = 'LE',
@@ -31,6 +34,7 @@ export default function MenuSection({
             {title}
           </h2>
         )}
+        {description ? <p className="menu-section__description">{description}</p> : null}
         {tagline ? (
           <div className="menu-section__tagline-row">
             <TaglineWave
@@ -47,12 +51,23 @@ export default function MenuSection({
       </div>
 
       {cardVariant === 'extras' ? (
-        <MenuListCard items={items} currencySuffix={currencySuffix} />
+        <MenuListCard
+          items={items}
+          sectionId={id}
+          sectionTitle={title}
+          currencySuffix={currencySuffix}
+        />
       ) : (
         <ul className={`menu-grid menu-grid--showcase${isOffers ? ' menu-grid--offers' : ''}`}>
           {items.map((item) => (
             <li key={item.name} className="menu-grid__item">
-              <MenuCard {...item} variant={cardVariant} currencySuffix={currencySuffix} />
+              <MenuCard
+                {...item}
+                sectionId={id}
+                sectionTitle={title}
+                variant={cardVariant}
+                currencySuffix={currencySuffix}
+              />
             </li>
           ))}
         </ul>

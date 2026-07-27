@@ -11,7 +11,21 @@ function resolveCardVariant(category) {
 }
 
 const FALLBACK_NAV_LABELS = {
-  'sweet-treats': 'Treats',
+  'breakfast-extras': 'B. Extras',
+  'manosha-extras': 'M. Extras',
+  'truffle-trends-cookies': 'Cookies',
+  'ice-coffee': 'Iced',
+  'speciality-coffee': 'Specialty',
+  additions: 'Extras',
+}
+
+function resolveItemImageStyle(entry, cardVariant) {
+  if (entry.imageStyle === 'circle' || entry.imageStyle === 'rounded' || entry.imageStyle === 'plain') {
+    return entry.imageStyle
+  }
+  if (cardVariant === 'drink') return 'plain'
+  if (cardVariant === 'offers') return 'rounded'
+  return 'circle'
 }
 
 export function mapMenuSections(categories = []) {
@@ -23,7 +37,10 @@ export function mapMenuSections(categories = []) {
       }
       return 0
     })
-    .map((category) => ({
+    .map((category) => {
+      const cardVariant = resolveCardVariant(category)
+
+      return {
       id: category.id,
       title: category.title,
       navLabel:
@@ -31,29 +48,32 @@ export function mapMenuSections(categories = []) {
         FALLBACK_NAV_LABELS[category.id] ??
         category.title,
       tagline: category.tagline ?? '',
-      cardVariant: resolveCardVariant(category),
+      description: category.description ?? '',
+      cardVariant,
       items: (category.items ?? [])
         .filter((entry) => entry?.name)
         .map((entry) => ({
           name: entry.name,
           price: String(entry.price ?? ''),
+          imageStyle: resolveItemImageStyle(entry, cardVariant),
           ...(entry.description ? { description: entry.description } : {}),
           ...(entry.image ? { image: entry.image } : {}),
           ...(entry.tags?.length ? { tags: entry.tags } : {}),
         })),
-    }))
+      }
+    })
     .filter((section) => section.cardVariant !== 'offers' || section.items.length > 0)
 }
 
 const DEFAULT_SOCIAL_LINKS = [
   {
     platform: 'instagram',
-    url: 'https://www.instagram.com/retrobrew.eg/',
+    url: 'https://www.instagram.com/milkcakebakery.egypt/',
     label: 'Instagram',
   },
   {
     platform: 'tiktok',
-    url: 'https://www.tiktok.com/@retrobrew.eg',
+    url: 'https://www.tiktok.com/@milkcakebakery.egypt',
     label: 'TikTok',
   },
 ]
@@ -62,21 +82,23 @@ export function mapSiteSettings(settings) {
   if (!settings) return null
 
   return {
-    heroEyebrow: settings.heroEyebrow ?? 'Coffee · Bowls · Bites',
-    heroTitleLine1: settings.heroTitleLine1 ?? 'MENU',
-    heroTitleLine2: settings.heroTitleLine2 ?? 'BREW.',
-    heroTagline: settings.heroTagline ?? 'Less rush. More flavour.',
-    heroCtaLabel: settings.heroCtaLabel ?? 'Explore Menu',
+    heroEyebrow: settings.heroEyebrow ?? 'Artisan Bakes · Café',
+    heroTitleLine1: settings.heroTitleLine1 ?? 'Milk Cake',
+    heroTitleLine2: settings.heroTitleLine2 ?? 'Bakery',
+    heroTagline: settings.heroTagline ?? 'Sweet moments, baked fresh every day.',
+    heroCtaLabel: settings.heroCtaLabel ?? 'View Menu',
     heroBackgroundUrl: settings.heroBackgroundUrl ?? null,
     heroDrinkUrl: settings.heroDrinkUrl ?? null,
     logoUrl: settings.logoUrl ?? null,
     socialLinks:
       settings.socialLinks?.length > 0 ? settings.socialLinks : DEFAULT_SOCIAL_LINKS,
-    currencySuffix: settings.currencySuffix ?? 'LE',
+    currencySuffix: settings.currencySuffix ?? 'EGP',
     loadingMessage: settings.loadingMessage ?? 'Loading menu…',
-    footerMotto: settings.footerMotto ?? 'RETRO BREW.',
-    footerText: settings.footerText ?? 'Brews & Bites',
-    seoTitle: settings.seoTitle ?? 'RETRO BREW — Brews & Bites',
-    seoDescription: settings.seoDescription ?? '',
+    footerMotto: settings.footerMotto ?? 'MILK CAKE BAKERY.',
+    footerText: settings.footerText ?? 'Artisan Bakes & Café',
+    seoTitle: settings.seoTitle ?? 'Milk Cake Bakery — Artisan Bakes & Café',
+    seoDescription:
+      settings.seoDescription ??
+      'Breakfast, signature desserts, milk cakes, coffee, and cold drinks.',
   }
 }

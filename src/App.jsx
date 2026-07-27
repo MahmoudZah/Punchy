@@ -3,6 +3,8 @@ import Hero from './components/Hero'
 import CategoryNav from './components/CategoryNav'
 import MenuSection from './components/MenuSection'
 import LoadingScreen from './components/LoadingScreen'
+import PickTray from './components/PickTray'
+import { PickProvider } from './context/PickContext'
 import { useSanityContent } from './hooks/useSanityContent'
 
 export default function App() {
@@ -34,22 +36,25 @@ export default function App() {
   }
 
   return (
-    <div className="app">
-      <Hero siteSettings={siteSettings} />
-      <CategoryNav menuSections={menuSections} />
-      <main className="main" id="menu">
-        {menuSections.map((section) => (
-          <MenuSection
-            key={section.id}
-            {...section}
-            currencySuffix={siteSettings.currencySuffix}
-          />
-        ))}
-      </main>
-      <footer className="footer">
-        <p className="footer__motto">{siteSettings.footerMotto}</p>
-        <p className="footer__text">{siteSettings.footerText}</p>
-      </footer>
-    </div>
+    <PickProvider currencySuffix={siteSettings.currencySuffix}>
+      <div className="app">
+        <Hero siteSettings={siteSettings} />
+        <CategoryNav menuSections={menuSections} />
+        <main className="main" id="menu">
+          {menuSections.map((section) => (
+            <MenuSection
+              key={section.id}
+              {...section}
+              currencySuffix={siteSettings.currencySuffix}
+            />
+          ))}
+        </main>
+        <footer className="footer">
+          <p className="footer__motto">{siteSettings.footerMotto}</p>
+          <p className="footer__text">{siteSettings.footerText}</p>
+        </footer>
+        <PickTray />
+      </div>
+    </PickProvider>
   )
 }

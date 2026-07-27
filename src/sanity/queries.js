@@ -3,12 +3,14 @@ export const MENU_QUERY = `*[_type == "menuCategory" && isVisible != false] | or
   title,
   navLabel,
   tagline,
+  description,
   orderRank,
   cardVariant,
   items[] {
     name,
     price,
     description,
+    imageStyle,
     tags,
     "image": image.asset->url
   }

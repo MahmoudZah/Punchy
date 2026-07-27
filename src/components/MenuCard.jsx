@@ -1,4 +1,5 @@
 import { useInView } from '../hooks/useInView'
+import PickButton from './PickButton'
 
 export default function MenuCard({
   name,
@@ -7,10 +8,14 @@ export default function MenuCard({
   image,
   tags = [],
   variant = 'food',
+  imageStyle = 'circle',
+  sectionId,
+  sectionTitle,
   currencySuffix = 'LE',
 }) {
   const hasImage = Boolean(image)
   const [cardRef, isInView] = useInView()
+  const useDrinkTilt = variant === 'drink' && imageStyle === 'plain'
 
   return (
     <article
@@ -18,6 +23,7 @@ export default function MenuCard({
       className={[
         'menu-card',
         `menu-card--${variant}`,
+        `menu-card--img-${imageStyle}`,
         hasImage && isInView ? 'menu-card--in-view' : '',
         hasImage ? '' : `menu-card--${variant}-text`,
       ]
@@ -27,7 +33,7 @@ export default function MenuCard({
       <div className="menu-card__showcase">
         {hasImage ? (
           <div className="menu-card__media">
-            {variant === 'drink' ? (
+            {useDrinkTilt ? (
               <div className="menu-card__rotate">
                 <img
                   className="menu-card__image"
@@ -72,7 +78,15 @@ export default function MenuCard({
             ) : null}
           </div>
           <div className="menu-card__footer">
-            <span className="menu-card__price">{price} {currencySuffix}</span>
+            <span className="menu-card__price">
+              {price} {currencySuffix}
+            </span>
+            <PickButton
+              sectionId={sectionId}
+              sectionTitle={sectionTitle}
+              name={name}
+              price={price}
+            />
           </div>
         </div>
       </div>
