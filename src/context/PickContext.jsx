@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 
 const PickContext = createContext(null)
-const PICK_STORAGE_KEY = 'milk-cake-bakery:pick'
+const PICK_STORAGE_KEY = 'punchy:pick'
 
 export function makePickId(sectionId, name) {
   return `${sectionId}::${name}`
