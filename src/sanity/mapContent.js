@@ -11,12 +11,15 @@ function resolveCardVariant(category) {
 }
 
 const FALLBACK_NAV_LABELS = {
-  'breakfast-extras': 'B. Extras',
-  'manosha-extras': 'M. Extras',
-  'truffle-trends-cookies': 'Cookies',
-  'ice-coffee': 'Iced',
-  'speciality-coffee': 'Specialty',
-  additions: 'Extras',
+  coffee: 'Coffee',
+  matcha: 'Matcha',
+  'frappe-creations': 'Frappes',
+  mojitos: 'Mojitos',
+  smothies: 'Smoothies',
+  'add-ons': 'Add Ons',
+  others: 'Others',
+  bakery: 'Bakery',
+  pastries: 'Pastries',
 }
 
 function resolveItemImageStyle(entry, cardVariant) {
@@ -41,25 +44,25 @@ export function mapMenuSections(categories = []) {
       const cardVariant = resolveCardVariant(category)
 
       return {
-      id: category.id,
-      title: category.title,
-      navLabel:
-        category.navLabel ??
-        FALLBACK_NAV_LABELS[category.id] ??
-        category.title,
-      tagline: category.tagline ?? '',
-      description: category.description ?? '',
-      cardVariant,
-      items: (category.items ?? [])
-        .filter((entry) => entry?.name)
-        .map((entry) => ({
-          name: entry.name,
-          price: String(entry.price ?? ''),
-          imageStyle: resolveItemImageStyle(entry, cardVariant),
-          ...(entry.description ? { description: entry.description } : {}),
-          ...(entry.image ? { image: entry.image } : {}),
-          ...(entry.tags?.length ? { tags: entry.tags } : {}),
-        })),
+        id: category.id,
+        title: category.title,
+        navLabel:
+          category.navLabel ??
+          FALLBACK_NAV_LABELS[category.id] ??
+          category.title,
+        tagline: category.tagline ?? '',
+        description: category.description ?? '',
+        cardVariant,
+        items: (category.items ?? [])
+          .filter((entry) => entry?.name)
+          .map((entry) => ({
+            name: entry.name,
+            price: String(entry.price ?? ''),
+            imageStyle: resolveItemImageStyle(entry, cardVariant),
+            ...(entry.description ? { description: entry.description } : {}),
+            ...(entry.image ? { image: entry.image } : {}),
+            ...(entry.tags?.length ? { tags: entry.tags } : {}),
+          })),
       }
     })
     .filter((section) => section.cardVariant !== 'offers' || section.items.length > 0)
@@ -68,37 +71,56 @@ export function mapMenuSections(categories = []) {
 const DEFAULT_SOCIAL_LINKS = [
   {
     platform: 'instagram',
-    url: 'https://www.instagram.com/milkcakebakery.egypt/',
+    url: 'https://www.instagram.com/punchy5.eg/',
     label: 'Instagram',
   },
   {
     platform: 'tiktok',
-    url: 'https://www.tiktok.com/@milkcakebakery.egypt',
+    url: 'https://www.tiktok.com/@punchy5.eg',
     label: 'TikTok',
   },
 ]
 
 export function mapSiteSettings(settings) {
-  if (!settings) return null
+  if (!settings) {
+    return {
+      heroEyebrow: 'Open Everyday · 9AM to 1AM',
+      heroTitleLine1: 'PUNCHY',
+      heroTitleLine2: 'SPECIALTY COFFEE',
+      heroTagline: 'Energetic, Graphic, Playful Specialty Coffee',
+      heroCtaLabel: 'EXPLORE MENU',
+      currencySuffix: 'LE',
+      loadingMessage: 'Brewing Punchy 5…',
+      footerMotto: 'PUNCHY 5 SPECIALTY COFFEE.',
+      footerText: 'Open Everyday · 9AM to 1AM',
+      seoTitle: 'PUNCHY 5 SPECIALTY COFFEE — Open Everyday 9AM to 1AM',
+      seoDescription:
+        'Official menu of PUNCHY 5 SPECIALTY COFFEE. Open Everyday, 9AM to 1AM.',
+      socialLinks: DEFAULT_SOCIAL_LINKS,
+      heroBackgroundUrl: null,
+      heroDrinkUrl: null,
+      logoUrl: null,
+    }
+  }
 
   return {
-    heroEyebrow: settings.heroEyebrow ?? 'Artisan Bakes · Café',
-    heroTitleLine1: settings.heroTitleLine1 ?? 'Milk Cake',
-    heroTitleLine2: settings.heroTitleLine2 ?? 'Bakery',
-    heroTagline: settings.heroTagline ?? 'Sweet moments, baked fresh every day.',
-    heroCtaLabel: settings.heroCtaLabel ?? 'View Menu',
+    heroEyebrow: settings.heroEyebrow ?? 'Open Everyday · 9AM to 1AM',
+    heroTitleLine1: settings.heroTitleLine1 ?? 'PUNCHY',
+    heroTitleLine2: settings.heroTitleLine2 ?? 'SPECIALTY COFFEE',
+    heroTagline: settings.heroTagline ?? 'Energetic, Graphic, Playful Specialty Coffee',
+    heroCtaLabel: settings.heroCtaLabel ?? 'EXPLORE MENU',
     heroBackgroundUrl: settings.heroBackgroundUrl ?? null,
     heroDrinkUrl: settings.heroDrinkUrl ?? null,
     logoUrl: settings.logoUrl ?? null,
     socialLinks:
       settings.socialLinks?.length > 0 ? settings.socialLinks : DEFAULT_SOCIAL_LINKS,
-    currencySuffix: settings.currencySuffix ?? 'EGP',
-    loadingMessage: settings.loadingMessage ?? 'Loading menu…',
-    footerMotto: settings.footerMotto ?? 'MILK CAKE BAKERY.',
-    footerText: settings.footerText ?? 'Artisan Bakes & Café',
-    seoTitle: settings.seoTitle ?? 'Milk Cake Bakery — Artisan Bakes & Café',
+    currencySuffix: settings.currencySuffix ?? 'LE',
+    loadingMessage: settings.loadingMessage ?? 'Brewing Punchy 5…',
+    footerMotto: settings.footerMotto ?? 'PUNCHY 5 SPECIALTY COFFEE.',
+    footerText: settings.footerText ?? 'Open Everyday · 9AM to 1AM',
+    seoTitle: settings.seoTitle ?? 'PUNCHY 5 SPECIALTY COFFEE — Open Everyday 9AM to 1AM',
     seoDescription:
       settings.seoDescription ??
-      'Breakfast, signature desserts, milk cakes, coffee, and cold drinks.',
+      'Official menu of PUNCHY 5 SPECIALTY COFFEE. Open Everyday, 9AM to 1AM.',
   }
 }

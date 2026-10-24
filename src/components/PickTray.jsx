@@ -1,7 +1,8 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { usePick } from '../context/PickContext'
 
 export default function PickTray() {
+  const panelRef = useRef(null)
   const {
     items,
     isOpen,
@@ -29,32 +30,35 @@ export default function PickTray() {
   useEffect(() => {
     if (!isOpen) return undefined
 
+    const onPointerDown = (event) => {
+      // If clicking outside the drawer panel, collapse it so the menu remains accessible
+      if (panelRef.current && !panelRef.current.contains(event.target)) {
+        closeSheet()
+      }
+    }
+
     const onKeyDown = (event) => {
       if (event.key === 'Escape') closeSheet()
     }
 
+    document.addEventListener('pointerdown', onPointerDown)
     window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
+    return () => {
+      document.removeEventListener('pointerdown', onPointerDown)
+      window.removeEventListener('keydown', onKeyDown)
+    }
   }, [isOpen, closeSheet])
 
   if (!hasItems) return null
 
   return (
     <div className={`pick-tray${isOpen ? ' pick-tray--open' : ''}`}>
-      {isOpen ? (
-        <button
-          type="button"
-          className="pick-tray__backdrop"
-          onClick={closeSheet}
-          aria-label="Close picked order"
-        />
-      ) : null}
-
+      {/* Zero blocking backdrop: menu remains interactive at all times */}
       <div
+        ref={panelRef}
         className="pick-tray__panel"
-        role={isOpen ? 'dialog' : undefined}
-        aria-modal={isOpen ? 'true' : undefined}
-        aria-label={isOpen ? 'Your picked order' : undefined}
+        role="region"
+        aria-label="Your picked order"
       >
         {!isOpen ? (
           <button type="button" className="pick-tray__peek" onClick={openSheet}>
@@ -79,13 +83,25 @@ export default function PickTray() {
           </button>
         ) : (
           <>
-            <div className="pick-tray__handle" aria-hidden="true" />
+            <div
+              className="pick-tray__handle"
+              aria-hidden="true"
+              onClick={closeSheet}
+              role="button"
+              tabIndex={0}
+              aria-label="Collapse pick tray"
+            />
             <header className="pick-tray__header">
               <div>
                 <p className="pick-tray__eyebrow">Group order</p>
                 <h2 className="pick-tray__title">Your Pick</h2>
               </div>
-              <button type="button" className="pick-tray__close" onClick={closeSheet} aria-label="Close">
+              <button
+                type="button"
+                className="pick-tray__close"
+                onClick={closeSheet}
+                aria-label="Close"
+              >
                 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path
                     d="M6 6l12 12M18 6L6 18"
@@ -96,8 +112,6 @@ export default function PickTray() {
                 </svg>
               </button>
             </header>
-
-            <p className="pick-tray__hint">Gather everyone&apos;s choices here, then show this to your cashier.</p>
 
             <ul className="pick-tray__list">
               {items.map((entry) => (

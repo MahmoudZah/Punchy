@@ -37,15 +37,9 @@ export default function MenuSection({
         {description ? <p className="menu-section__description">{description}</p> : null}
         {tagline ? (
           <div className="menu-section__tagline-row">
-            <TaglineWave
-              className={`menu-section__line${isOffers ? ' menu-section__line--offers' : ''}`}
-            />
             <p className={`menu-section__tagline${isOffers ? ' menu-section__tagline--offers' : ''}`}>
               {tagline}
             </p>
-            <TaglineWave
-              className={`menu-section__line${isOffers ? ' menu-section__line--offers' : ''}`}
-            />
           </div>
         ) : null}
       </div>

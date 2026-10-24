@@ -7,7 +7,7 @@ export default function MenuCard({
   price,
   image,
   tags = [],
-  variant = 'food',
+  variant = 'drink',
   imageStyle = 'circle',
   sectionId,
   sectionTitle,
@@ -16,6 +16,9 @@ export default function MenuCard({
   const hasImage = Boolean(image)
   const [cardRef, isInView] = useInView()
   const useDrinkTilt = variant === 'drink' && imageStyle === 'plain'
+  
+  const isSignature = tags.includes('signature') || name.includes('*')
+  const finalTags = isSignature && !tags.includes('signature') ? ['signature', ...tags] : tags
 
   return (
     <article
@@ -54,13 +57,19 @@ export default function MenuCard({
             )}
           </div>
         ) : null}
+
         <div className="menu-card__panel">
           <div className="menu-card__body">
-            <h3 className="menu-card__title">{name}</h3>
+            <h3 className="menu-card__title">
+              {name}
+              {isSignature && !name.includes('*') ? (
+                <span className="menu-card__sig-star">*</span>
+              ) : null}
+            </h3>
             {description ? <p className="menu-card__description">{description}</p> : null}
-            {tags.length > 0 ? (
+            {finalTags.length > 0 ? (
               <ul className="menu-card__tags" aria-label={`${name} tags`}>
-                {tags.map((tag) => (
+                {finalTags.map((tag) => (
                   <li
                     key={tag}
                     className={[
@@ -77,6 +86,7 @@ export default function MenuCard({
               </ul>
             ) : null}
           </div>
+
           <div className="menu-card__footer">
             <span className="menu-card__price">
               {price} {currencySuffix}

@@ -71,11 +71,10 @@ export function PickProvider({ children, currencySuffix = 'EGP' }) {
 
   const pickItem = useCallback((item) => {
     setItems((prev) => {
-      const shouldOpen = prev.length === 0
       const id = makePickId(item.sectionId, item.name)
       const existing = prev.find((entry) => entry.id === id)
 
-      const next = existing
+      return existing
         ? prev.map((entry) =>
             entry.id === id ? { ...entry, quantity: entry.quantity + 1 } : entry,
           )
@@ -89,9 +88,6 @@ export function PickProvider({ children, currencySuffix = 'EGP' }) {
               quantity: 1,
             },
           ]
-
-      if (shouldOpen) setIsOpen(true)
-      return next
     })
   }, [])
 

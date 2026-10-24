@@ -1,454 +1,166 @@
-const item = (name, price, extra = {}) => ({
-  name,
-  price: String(price),
-  ...extra,
-})
+const item = (name, price, descOrExtra = {}, extra = {}) => {
+  const isDesc = typeof descOrExtra === 'string'
+  const description = isDesc ? descOrExtra : descOrExtra.description
+  const opts = isDesc ? extra : descOrExtra
+  const isSignature = name.includes('*') || opts.tags?.includes('signature')
+  const tags = opts.tags || (isSignature ? ['signature'] : [])
+
+  return {
+    name,
+    price: String(price),
+    tags,
+    ...(description ? { description } : {}),
+    ...opts,
+  }
+}
 
 export const menuSections = [
   {
-    id: 'offers',
-    title: 'Offers',
-    navLabel: 'Offers',
-    tagline: 'Limited Time',
-    items: [
-      item('Sky High Sampler', 340, {
-        description:
-          'Four iced favorites to share — fresh orange juice, creamy iced coffee, chocolate frappe, and a chilled berry refresher. Perfect for sunny days.',
-        tags: ['limited'],
-        image: '/offers/sky-high-sampler.png',
-        imageStyle: 'rounded',
-      }),
-    ],
-  },
-  {
-    id: 'breakfast',
-    title: 'Breakfast',
-    tagline: 'Morning Favorites',
-    cardVariant: 'extras',
-    items: [
-      item('Halloumi Sandwich', 150),
-      item('Scramble Bagel', 120),
-      item('Croissant', 75),
-      item('Turkey Cheese Croissant', 180),
-      item('Cheese Croissant', 160),
-      item('Spanish Omelette', 90),
-      item('American Breakfast', 160),
-      item('Cheese Egg Benedict', 190),
-      item('Turkey Cheese Omelette', 160),
-      item('Roast Beef Sandwich', 160),
-      item('Tuna Sandwich', 160),
-    ],
-  },
-  {
-    id: 'breakfast-extras',
-    title: 'Breakfast Extras',
-    navLabel: 'B. Extras',
-    tagline: 'Add-Ons',
-    cardVariant: 'extras',
-    items: [
-      item('Extra Hotdog', 69),
-      item('Extra Turkey', 25),
-      item('Extra Cheese', 25),
-      item('Extra Bread', 25),
-    ],
-  },
-  {
-    id: 'manosha',
-    title: "Man'osha",
-    tagline: 'Fresh Baked',
-    cardVariant: 'extras',
-    items: [
-      item("Man'osha Vegetable", 125),
-      item("Man'osha Halloumi Pesto", 135),
-      item("Man'osha Za'atar", 100),
-      item("Man'osha Roast Beef", 135),
-      item("Man'osha Turkey", 135),
-    ],
-  },
-  {
-    id: 'manosha-extras',
-    title: "Man'osha Extras",
-    navLabel: 'M. Extras',
-    tagline: 'Add-Ons',
-    cardVariant: 'extras',
-    items: [
-      item('Extra Vegetables', 30),
-      item('Extra Mozzarella', 35),
-      item('Extra Cheddar', 40),
-      item('Extra Halloumi', 40),
-      item('Extra Turkey', 40),
-      item('Extra Roast Beef', 40),
-    ],
-  },
-  {
-    id: 'signature',
-    title: 'Signature',
-    tagline: 'House Favorites',
-    cardVariant: 'food',
-    items: [
-      item('Sticky Date', 260, {
-        description:
-          'Date cake with vanilla ice cream covered with Belgian chocolate served with our special caramel sauce.',
-        tags: ['signature'],
-      }),
-      item('Ovo Pecan Roll', 210, {
-        description:
-          'Chewy cinnamon dough rolls stuffed with pecan served with white chocolate and caramel sauce.',
-      }),
-      item('Honey Cake', 240, {
-        description:
-          'Layers of biscuits, cream cheese and honey mixture served with strawberry and special honey sauce.',
-      }),
-      item('French Peanut Butter Brownies', 240, {
-        description:
-          'Brownies French style loaded with caramelized almond served with peanut butter and milk chocolate topped with vanilla ice cream.',
-      }),
-      item('Speculoos Surprise', 220, {
-        description: 'Chocolate fondant with melting speculoos served with vanilla ice cream.',
-      }),
-      item('Mini Volcano', 240, {
-        description:
-          'Chocolate cake stuffed with chocolate sauce rich in roasted nuts (pecan, almonds, hazelnut, walnuts, pistachio).',
-      }),
-      item('Break Me', 290, {
-        description:
-          'A piece of French brownie with vanilla ice cream and fruits covered with milk chocolate served with our special caramel sauce.',
-        tags: ['signature'],
-      }),
-      item('Matilda Cake', 320, {
-        description:
-          'Moist chocolate cake layers topped and filled with a glossy chocolate fudge frosting. Served with chocolate sauce.',
-        tags: ['signature'],
-      }),
-      item('Saffron French Toast', 180, {
-        description: 'Brioche toast flavoured with saffron milk and caramel.',
-      }),
-      item('Caramel French Toast', 190, {
-        description: 'Brioche toast flavoured with caramel milk and caramel sauce.',
-      }),
-      item('Nutella French Toast', 210, {
-        description: 'French toast flavored with Nutella.',
-      }),
-      item('Tiramisu Cake', 180, {
-        description:
-          'For coffee lovers, several layers of tiramisu lady finger mixed, served with a special coffee sauce.',
-      }),
-      item('San Sebastian Chocolate', 280, {
-        description:
-          'Traditional Turkish cheesecake, light, creamy and smooth, perfectly caramelized. Served with chocolate sauce.',
-      }),
-      item('San Sebastian Lotus', 300, {
-        description:
-          'Traditional Turkish cheesecake, light, creamy and smooth, perfectly caramelized. Served with lotus sauce.',
-      }),
-      item('San Sebastian Strawberry', 280, {
-        description:
-          'Traditional Turkish cheesecake, light, creamy and smooth, perfectly caramelized. Served with strawberry sauce.',
-      }),
-      item('San Sebastian Pistachio', 310, {
-        description:
-          'Traditional Turkish pistachio cheesecake, light, creamy and smooth, perfectly caramelized. Served with pistachio sauce.',
-      }),
-    ],
-  },
-  {
-    id: 'baby-dynamite',
-    title: 'Baby Dynamite',
-    tagline: 'Explosive Flavor',
-    cardVariant: 'food',
-    items: [
-      item('Baby Dynamite', 270, {
-        description:
-          '2 layers of chocolate cake stuffed and topped with vanilla ice cream covered with lotus and sprinkled Lotus crumbs. Served with hot caramel sauce.',
-        tags: ['signature'],
-      }),
-      item('Saffron Baby Dynamite', 270, {
-        description:
-          '2 layers of saffron cake stuffed and covered with vanilla ice cream covered with saffron sauce. Served with hot saffron sauce.',
-      }),
-      item('Pistachio Baby Dynamite', 270, {
-        description:
-          '2 layers of pistachio cake stuffed and covered with vanilla ice cream covered with pistachio sauce and sprinkled pistachio crumbs. Served with hot pistachio sauce.',
-      }),
-      item('Chocolate Baby Dynamite', 270, {
-        description:
-          '2 layers of chocolate cake stuffed and covered with vanilla ice cream covered with chocolate sauce. Served with chocolate sauce.',
-      }),
-      item('Mango Baby Dynamite', 240, {
-        description:
-          '2 layers of mango cake stuffed and covered with mango ice cream covered with mango sauce. Served with mango sauce.',
-      }),
-    ],
-  },
-  {
-    id: 'carry-me',
-    title: 'Carry Me',
-    tagline: 'Saucy Indulgence',
-    cardVariant: 'food',
-    items: [
-      item('Carry Me Caramel', 240, {
-        description:
-          'A piece of soft vanilla cake with a layer of vanilla ice cream and caramel sauce.',
-      }),
-      item('Carry Me Pistachio', 240, {
-        description:
-          'A piece of soft pistachio cake with a layer of vanilla ice cream, pistachio sauce and grounded pistachio.',
-      }),
-      item('Carry Me Brownies', 240, {
-        description:
-          'Soft chocolate cake with a layer of vanilla ice cream, brownies drenched in chocolate sauce and sprinkled with corn flakes.',
-      }),
-    ],
-  },
-  {
-    id: 'milk-cakes',
-    title: 'Milk Cakes',
-    tagline: 'Soaked & Creamy',
-    cardVariant: 'food',
-    items: [
-      item('Lotus Milk Cake', 210, {
-        description:
-          'Milk cake covered with whipping cream, lotus spread served with milk syrup.',
-        tags: ['signature'],
-      }),
-      item('Trilece Milk Cake', 210, {
-        description:
-          'Covered with whipping cream and white chocolate served with milk syrup.',
-      }),
-      item('Saffron Milk Cake', 285, {
-        description:
-          'Rich saffron cake soaked in saffron milk with whipping cream.',
-      }),
-      item('Pistachio Milk Cake', 285, {
-        description:
-          'Pistachio fudge soaked with pistachio sauce topped with whipping cream and pistachio nuts.',
-      }),
-      item('Vanilla Milk Cake', 210, {
-        description:
-          'Vanilla cake soaked in vanilla milk and served with whipping cream and fresh fruit.',
-      }),
-    ],
-  },
-  {
-    id: 'truffle-trends-cookies',
-    title: 'Truffle & Trends Cookies',
-    navLabel: 'Cookies',
-    tagline: 'Warm & Stuffed',
-    cardVariant: 'food',
-    items: [
-      item('Pistachio Cookies', 260, {
-        description: 'Cookies stuffed with pistachio and topped with ice cream.',
-      }),
-      item('Nutella Cookies', 260, {
-        description: 'Cookies stuffed with Nutella and topped with ice cream.',
-      }),
-      item('Lotus Cookies', 260, {
-        description: 'Cookies stuffed with Lotus and topped with ice cream.',
-      }),
-    ],
-  },
-  {
-    id: 'crepe',
-    title: 'Crepe',
-    tagline: 'Belgian Chocolate',
-    cardVariant: 'food',
-    items: [
-      item('Chocolate Crepe', 220, {
-        description:
-          'Homemade crepe stuffed and covered with milk chocolate sprinkled with lotus crumbs.',
-      }),
-      item('Oreo Crepe', 260, {
-        description:
-          'Homemade crepe stuffed with milk chocolate and Oreo topped with milk chocolate, white chocolate and Oreo.',
-      }),
-      item('Kinder Crepe', 260, {
-        description:
-          'Homemade crepe stuffed with milk chocolate and Kinder topped with milk chocolate, white chocolate and Kinder.',
-      }),
-      item('Almond Nutella Crepe', 260, {
-        description:
-          'Homemade crepe stuffed and topped with Nutella sprinkled with crunchy almond.',
-      }),
-    ],
-  },
-  {
-    id: 'waffle',
-    title: 'Waffle',
-    tagline: 'Crispy & Sweet',
-    cardVariant: 'food',
-    items: [
-      item('Nutella Waffle', 210),
-      item('Red Velvet Waffle', 210),
-      item('Choco Waffle', 210),
-      item('Crispy and Chewy Waffle', 210),
-    ],
-  },
-  {
-    id: 'pancake',
-    title: 'Pancake',
-    tagline: 'Fluffy Stacks',
-    cardVariant: 'food',
-    items: [
-      item('Chocolate Pancake', 240, {
-        description:
-          "Layers of chocolate pancake stuffed with milk chocolate served with vanilla ice cream.",
-      }),
-      item('Lotus Pancake', 280, {
-        description:
-          'Layers of lotus pancake filled with lotus served with vanilla ice cream.',
-      }),
-      item('Pistachio Pancake', 310, {
-        description:
-          'Layers of pistachio pancake filled with pistachio spread served with vanilla ice cream.',
-      }),
-      item('Red Velvet Pancake', 220, {
-        description:
-          'Layers of red velvet pancake stuffed with white chocolate served with vanilla and fruits.',
-      }),
-      item('Vanilla Pancake', 160, {
-        description:
-          'Vanilla pancakes served with your choice of maple syrup, milk chocolate, or white chocolate.',
-      }),
-    ],
-  },
-  {
     id: 'coffee',
-    title: 'Coffee',
-    tagline: 'Hot & Bold',
+    title: 'COFFEE',
+    navLabel: 'Coffee',
+    tagline: 'Specialty Roasts & Espresso Bar',
     cardVariant: 'drink',
     items: [
-      item('Espresso Single', 50),
-      item('Espresso Double', 80),
-      item('Espresso Affogato', 80),
-      item('Cortado', 80),
-      item('Cappuccino', 85),
-      item('Americano', 70),
-      item('Turkish Coffee', 45),
-      item('Double Turkish Coffee', 70),
-      item('White Mocha', 110),
-      item('Single Macchiato', 60),
-      item('Double Macchiato', 85),
-      item('Flat White', 85),
-      item('Latte', 85),
-      item('Spanish Latte', 100),
-      item('Pistachio Latte', 140),
-      item('Arabic Coffee', 170),
-      item('Mocha', 95),
-      item('Dark Mocha', 110),
+      item('Espresso', 90, 'Rich double shot with a thick, velvety golden crema.'),
+      item('Espresso Macchiato', 100, 'Bold double espresso marked with silky steamed micro-foam.'),
+      item('Americano (H/C)', 100, 'Espresso elongated over hot or chilled filtered water.'),
+      item('Piccolo', 110, 'Intense ristretto shot balanced with warm, silky milk.'),
+      item('Cortado', 110, 'Equal parts bold espresso and smooth textured milk.'),
+      item('Flat White', 120, 'Double ristretto poured with finely textured micro-foam.'),
+      item('Cappuccino', 130, 'Classic espresso layered with velvety milk and dense foam.'),
+      item('Latte (H/C)', 140, 'Smooth specialty espresso with silky steamed or iced milk.'),
+      item('Spanish Latte (H/C)*', 170, 'Signature espresso swirled with sweet condensed milk & cream.', { tags: ['signature'] }),
+      item('Mocha Latte (H/C)', 175, 'Espresso blended with rich Dutch cocoa and creamy milk.'),
+      item('White Mocha(H/C)', 175, 'Espresso infused with sweet white chocolate and velvety milk.'),
+      item('Salted Caramel (H/C)*', 170, 'Signature espresso with house-crafted salted caramel.', { tags: ['signature'] }),
+      item('Pistachio Latte (H/C)', 200, 'Espresso infused with roasted Mediterranean pistachio cream.'),
+      item('Honey Comb (H/C)', 165, 'Golden honeycomb crunch melted into warm espresso and milk.'),
+      item('Crunch Latte (H/C)', 190, 'Creamy espresso latte topped with caramelized crunchy crisps.'),
+      item('Pour Over (H/C)', 200, 'Single-origin filter brew showcasing nuanced floral terroir.'),
+      item('AFFOCATO (Cold)', 185, 'Creamy vanilla bean gelato drowned in a hot shot of espresso.'),
     ],
   },
   {
-    id: 'ice-coffee',
-    title: 'Ice Coffee',
-    navLabel: 'Iced',
-    tagline: 'Chilled Brews',
+    id: 'matcha',
+    title: 'MATCHA',
+    navLabel: 'Matcha',
+    tagline: 'Ceremonial Grade Infusions',
     cardVariant: 'drink',
     items: [
-      item('Ice Americano', 70),
-      item('Ice Latte', 85),
-      item('Ice Cappuccino', 85),
-      item('Ice Mocha (White/Dark)', 120),
-      item('Ice Shaken Mocha', 110),
-      item('Ice Pistachio', 140),
-      item('Ice Spanish Latte', 100),
-      item('Ice Caramel Macchiato', 120),
-      item('Frappe', 150),
-      item('Nutella Frappe', 125),
-      item('Mocha Frappe', 150),
-      item('Lotus Frappe', 150),
+      item('Matcha Latte (H/C)', 170, 'Ceremonial Japanese Uji matcha whisked with fresh milk.'),
+      item('Strawberry Matcha', 180, 'Fresh strawberry compote layered with ceremonial green matcha.'),
+      item('Mango Matcha', 180, 'Tropical mango purée topped with iced ceremonial matcha.'),
+      item('Vanilla Matcha', 190, 'French vanilla bean syrup balanced with earthy green matcha.'),
+      item('PB Matcha', 200, 'Creamy peanut butter richness blended with vibrant green matcha.'),
+      item('Pina-colada Matcha', 190, 'Tropical coconut cream and pineapple kissed with ceremonial matcha.'),
+      item('Hibiscus Matcha*', 190, 'Signature tart floral hibiscus tea layered with green matcha.', { tags: ['signature'] }),
+      item('Birthday Matcha', 190, 'Celebratory vanilla cake infusion with festive sprinkles & matcha.'),
     ],
   },
   {
-    id: 'speciality-coffee',
-    title: 'Speciality Coffee',
-    navLabel: 'Specialty',
-    tagline: 'Craft Brews',
+    id: 'frappe-creations',
+    title: 'FRAPPE CREATIONS',
+    navLabel: 'Frappes',
+    tagline: 'Ice Blended Creations',
     cardVariant: 'drink',
     items: [
-      item('V60', 70),
-      item('Ice Drip', 85),
-      item('Ice Drip Berries', 100),
-      item('Cold Brew', 110),
-      item('French Press', 80),
+      item('Classic', 140, 'Chilled blended espresso whipped with whole milk and light sweetness.'),
+      item('Salted Brownies*', 180, 'Signature ice-blended frappe with chewy fudge brownie chunks.', { tags: ['signature'] }),
+      item('Vanilla', 180, 'Creamy Madagascar vanilla bean frappe with fresh whipped cream.'),
+      item('Pistachio', 200, 'Rich roasted pistachio paste ice-blended into a silky frappe.'),
+      item('Matcha', 190, 'Ceremonial green matcha blended with sweet cream and crushed ice.'),
     ],
   },
   {
-    id: 'hot-drinks',
-    title: 'Hot Drinks',
-    tagline: 'Warm Sips',
+    id: 'mojitos',
+    title: 'MOJITOS',
+    navLabel: 'Mojitos',
+    tagline: 'Sparkling & Refreshing',
     cardVariant: 'drink',
     items: [
-      item('Tea', 40),
-      item('Green Tea', 40),
-      item('Flavour Tea', 45),
-      item('Karak Tea', 80),
-      item('Ginger Power', 70),
-      item('Sahlep', 80),
-      item('Hot Cider', 75),
-      item('Hot Chocolate', 95),
-      item('Mocha Snickers', 150),
-      item('Mocha Kinder', 150),
-      item('Hummus El Sham', 50),
-      item('Balila', 75),
+      item('Lemon Mint', 150, 'Muddled garden mint, zesty lime juice, and sparkling soda.'),
+      item('Mixed Berries', 160, 'Blackberries, raspberries, and fresh mint over crushed ice.'),
+      item('Blue Hawaii', 160, 'Tropical blue curaçao, citrus, and mint served sparkling cold.'),
+      item('Lavender Mist', 160, 'Delicate French lavender blossoms with lime and sparkling water.'),
+      item('Redbull Passion Mojito*', 180, 'Signature energizing Red Bull lift with tropical passion fruit.', { tags: ['signature'] }),
     ],
   },
   {
-    id: 'cold-drinks',
-    title: 'Cold Drinks',
-    tagline: 'Cool & Fresh',
+    id: 'smothies',
+    title: 'SMOTHIES',
+    navLabel: 'Smoothies',
+    tagline: 'Blended Real Fruit',
     cardVariant: 'drink',
     items: [
-      item('Mojito Classic', 85),
-      item('Mojito Mix', 120),
-      item('Lemon with Mint Fresh Juice', 70),
-      item('Orange Fresh Juice', 70),
-      item('Strawberry Fresh Juice', 70),
-      item('Mango Fresh Juice', 70),
-      item('Guava Fresh Juice', 70),
-      item('Avocado with Honey', 130),
-      item('Red Bull', 80),
-      item('Red Bull Mix', 150),
-      item('Hummer Head', 120),
-      item('Ice Tea', 60),
-      item('Ice Tea Flavour', 85),
-      item('Ice Chocolate', 140),
-      item('Ice Chocolate Nutella', 140),
-      item('We Mango', 110),
-      item('Water', 20),
-      item('Sparkling Water', 45),
+      item('Mixed Berries', 190, 'Thick antioxidant blend of real strawberries and wild blueberries.'),
+      item('Citrus Glow*', 180, 'Signature zesty blend of orange, pink grapefruit, and passion fruit.', { tags: ['signature'] }),
+      item('Azure Wave', 190, 'Blue spirulina superfood blended with coconut milk and banana.'),
+      item('Golden Moon', 190, 'Creamy golden mango, ripe peach, and passion fruit smoothie.'),
     ],
   },
   {
-    id: 'milkshake',
-    title: 'Milkshake',
-    tagline: 'Thick & Creamy',
-    cardVariant: 'drink',
-    items: [
-      item('Pistachio Milkshake', 130),
-      item('Oreo Milkshake', 120),
-      item('Chocolate Milkshake', 120),
-      item('Strawberry Milkshake', 120),
-      item('Nutella Milkshake', 120),
-      item('Vanilla Milkshake', 110),
-      item('Snickers Milkshake', 130),
-      item('Mango Milkshake', 120),
-      item('Lotus Milkshake', 120),
-      item('Mix Berry Milkshake', 120),
-    ],
-  },
-  {
-    id: 'additions',
-    title: 'Additions',
-    navLabel: 'Extras',
-    tagline: 'Customize',
+    id: 'add-ons',
+    title: 'ADD ONS',
+    navLabel: 'Add Ons',
+    tagline: 'Customize Your Cup',
     cardVariant: 'extras',
     items: [
-      item('Extra Topping', 75),
-      item('Extra Flavour', 25),
-      item('Extra Ice Cream', 25),
-      item('Extra Milk', 15),
-      item('Extra Marshmallow', 20),
-      item('Extra Nuts', 25),
+      item('Extra SHOT', 50, 'Additional double shot of freshly ground specialty espresso.'),
+      item('CONDENSED MILK', 50, 'Sweet caramelized condensed milk drizzle.'),
+      item('CHERRY FLAVOR', 40, 'Sweet wild cherry syrup infusion.'),
+      item('SUGAR FREE SYRUP (Caramel-Vanilla- Hazelnut)', 40, 'Zero-calorie artisan flavor syrup of your choice.'),
+    ],
+  },
+  {
+    id: 'others',
+    title: 'OTHERS',
+    navLabel: 'Others',
+    tagline: 'Warm Comfort & Chilled Cans',
+    cardVariant: 'extras',
+    items: [
+      item('Hot Chocolate', 150, 'Rich melted Belgian chocolate with velvety steamed whole milk.'),
+      item('Redbull Can', 100, 'Chilled 250ml can of original energy drink.'),
+      item('Sprite Can', 40, 'Crisp, sparkling lemon-lime soda served ice-cold.'),
+    ],
+  },
+  {
+    id: 'bakery',
+    title: 'BAKERY',
+    navLabel: 'Bakery',
+    tagline: 'Freshly Baked Croissants & Bagels',
+    cardVariant: 'food',
+    items: [
+      item('Butter Croissant', 100, 'Flaky, golden French all-butter laminated pastry.'),
+      item('Almond Croissant*', 130, 'Signature twice-baked croissant stuffed with almond frangipane.', { tags: ['signature'] }),
+      item('Pistachio Croissant*', 160, 'Signature flaky croissant filled with roasted pistachio cream.', { tags: ['signature'] }),
+      item('Smoked Turkey Croissant', 180, 'Savory butter croissant with smoked turkey breast & greens.'),
+      item('Mixed Cheese Croissant', 180, 'Melted cheddar, gouda, and mozzarella in warm flaky pastry.'),
+      item("Za'tar & Cheese Croissant", 130, 'Aromatic wild thyme zaatar herb blend with creamy cheese.'),
+      item('Pastrami & Cheese Croissant', 150, 'Spiced cured beef pastrami layered with melted cheese.'),
+      item('Smoked Salmon Bagel*', 300, 'Signature toasted bagel with smoked salmon, cream cheese & capers.', { tags: ['signature'] }),
+      item('pain suisse', 120, 'Crispy layered brioche ribbon with silky pastry cream & chocolate.'),
+    ],
+  },
+  {
+    id: 'pastries',
+    title: 'PASTRIES',
+    navLabel: 'Pastries',
+    tagline: 'Artisan Cakes, Eclairs & Treats',
+    cardVariant: 'food',
+    items: [
+      item('Coffee Eclair', 100, 'Choux pastry filled with robust espresso cream & coffee glaze.'),
+      item('Chocolate Eclair', 100, 'Traditional French choux pastry filled with dark chocolate custard.'),
+      item('Pistachio Eclair*', 120, 'Signature choux filled with roasted pistachio cream & praline.', { tags: ['signature'] }),
+      item('Coffee Bean', 170, 'Artisan coffee bean chocolate mousse cake with espresso ganache.'),
+      item('Lotus Cheesecake', 170, 'Creamy New York cheesecake topped with spiced speculoos Lotus spread.'),
+      item('Blueberry Cheesecake', 170, 'Velvety classic cheesecake layered with wild blueberry compote.'),
+      item('San Sebastian Cheesecake*', 190, 'Signature Basque burnt cheesecake with molten caramelized center.', { tags: ['signature'] }),
+      item('Raspberry Tart*', 170, 'Signature buttery shortcrust tart loaded with fresh raspberries.', { tags: ['signature'] }),
+      item('Blueberry Tart', 170, 'Sweet pastry crust filled with crème pâtissière and glazed berries.'),
+      item('Chocolate Chip Cookie', 80, 'Soft-baked golden cookie studded with semi-sweet chocolate chips.'),
+      item('Double Chocolate Cookie', 90, 'Fudgy dark cocoa dough loaded with melted chocolate chunks.'),
+      item('Brownies*', 100, 'Signature ultra-dense, fudgy dark chocolate brownie.', { tags: ['signature'] }),
     ],
   },
 ]

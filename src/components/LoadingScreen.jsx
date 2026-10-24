@@ -1,15 +1,11 @@
-const LOGO_FALLBACK = '/logo.png'
+import BrandLogo from './BrandLogo'
 
-export default function LoadingScreen({ logoUrl, message = 'Loading menu…' }) {
+export default function LoadingScreen({ message = 'Brewing Punchy 5…' }) {
   return (
     <div className="loading-screen" role="status" aria-live="polite" aria-label="Loading menu">
-      <img
-        className="loading-screen__logo"
-        src={logoUrl ?? LOGO_FALLBACK}
-        alt=""
-        width={80}
-        height={80}
-      />
+      <div className="loading-screen__logo-wrap">
+        <BrandLogo size="large" variant="warm" />
+      </div>
       <p className="loading-screen__text">{message}</p>
     </div>
   )
